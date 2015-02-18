@@ -1,0 +1,9 @@
+#!/bin/zsh
+docker run -ti --rm \
+        -e DISPLAY="$DISPLAY" \
+        -e HOME="$HOME" \
+        -v /tmp/.X11-unix:/tmp/.X11-unix \
+        -v "$HOME":"$HOME" \
+        -v "/usr/share/fonts/":"/usr/share/fonts/" \
+        --net=host \
+        abraverm/eclipse
