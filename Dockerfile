@@ -1,5 +1,6 @@
 FROM fedora
 MAINTAINER Alexander Braverman "abraverm@redhat.com"
+RUN yum clean all && yum update -y
 # Base
 RUN yum install -y -q sudo java-1.8.0-openjdk java-1.8.0-openjdk-devel
 # Improve Fonts
