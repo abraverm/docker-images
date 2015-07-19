@@ -2,9 +2,10 @@ FROM fedora
 MAINTAINER Alexander Braverman "abraverm@redhat.com"
 
 # Setting variables
-ENV FOREMAN 1.7-stable
+ENV FOREMAN 1.9-stable
 ENV WITHOUT 'mysql2 pg test'
 ENV RAILS_ENV production
+ENV RUBY_VER 1.9.3
 
 # Installing dependencies
 # Puppet, libraries and tools
@@ -19,7 +20,7 @@ RUN yum install -y -q tar sudo git puppet gcc-c++ patch \
 RUN curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
 RUN curl -L get.rvm.io | bash -s stable
 ENV PATH $PATH:/usr/local/rvm/bin/
-RUN rvm requirements && rvm install 1.9.3
+RUN rvm requirements && rvm install $RUBY_VER
 RUN rvm 1.9.3 rubygems current
 RUN rvm 1.9.3 do gem install rails mysql2
 
@@ -30,12 +31,11 @@ WORKDIR /opt/foreman
 
 # Initialiazing foreman
 RUN cp config/settings.yaml.example config/settings.yaml && cp config/database.yml.example config/database.yml
-RUN rvm 1.9.3 do ruby --version
-RUN rvm 1.9.3 do gem install bundler
-RUN rvm 1.9.3 do bundle install --without $WITHOUT --path vendor
-RUN rvm 1.9.3 do bundle exec rake db:migrate
-RUN rvm 1.9.3 do bundle exec rake db:seed assets:precompile locale:pack
-RUN rvm 1.9.3 do bundle exec rake permissions:reset password=changeme
+RUN rvm $RUBY_VER do gem install bundler
+RUN rvm $RUBY_VER do bundle install --without $WITHOUT --path vendor
+RUN rvm $RUBY_VER do bundle exec rake db:migrate
+RUN rvm $RUBY_VER do bundle exec rake db:seed assets:precompile locale:pack
+RUN rvm $RUBY_VER do bundle exec rake permissions:reset password=changeme
 
 # Finalize
 ADD ./start.sh /opt/start.sh
