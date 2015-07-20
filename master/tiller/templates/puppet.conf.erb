@@ -1,0 +1,37 @@
+[main]
+    <%= "user = #{user}" if defined?(user) %>
+    <%= "group = #{group}" if defined?(group) %>
+    <% if defined?(vardir) -%>
+    # Where Puppet stores dynamic and growing data.
+    # The default value is '/var/puppet'.
+    vardir = <%= vardir %>
+    <% end -%>
+    <% if defined?(logdir) -%>
+    # The Puppet log directory.
+    # The default value is '$vardir/log'.
+    logdir = <%= logdir %>
+    <% end -%>
+    <% if defined?(rundir) -%>
+    # Where Puppet PID files are kept.
+    # The default value is '$vardir/run'.
+    rundir = <%= rundir %>
+    <% end -%>
+    <% if defined?(ssldir) -%>
+    # Where SSL certificates are kept.
+    # The default value is '$confdir/ssl'.
+    ssldir = <%= ssldir %>
+    <% end -%>
+
+[master]
+    <%= "modulepath = #{modulepath}" if defined?(modulepath) %>
+    <%= "environments = #{environments}" if defined?(environments) %>
+    <%= "certname = #{certname}" if defined?(certname) %>
+    <%= "server = #{server}" if defined?(server) %>
+    <%= "storeconfigs = #{storeconfigs}" if defined?(storeconfigs) %>
+    <%= "dbuser = #{dbuser}" if defined?(dbuser) %>
+    <%= "dbadapter = #{dbadapter}" if defined?(dbadapter) %>
+    <%= "dbpassword = #{dbpassword}" if defined?(dbpassword) %>
+    <%= "dbname = #{dbname}" if defined?(dbname) %>
+    <%= "dbserver = #{dbserver}" if defined?(dbserver) %>
+    <%= "dbsocket = #{dbsocket}" if defined?(dbsocket) %>
+    <%= "autosign = #{autosign}" if defined?(autosign) %>

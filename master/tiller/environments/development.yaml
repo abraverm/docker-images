@@ -1,0 +1,6 @@
+puppet.conf.erb:
+  target: /etc/puppet/puppet.conf
+  config:
+    server: puppetmaster.docker.local
+    certname: puppetmaster.docker.local
+    autosign: true

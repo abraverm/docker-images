@@ -1,0 +1,7 @@
+  exec: [ "/bin/puppet" , "agent" , "-t"]
+  data_sources:
+    - defaults
+    - file
+    - environment_json
+  template_sources:
+    - file

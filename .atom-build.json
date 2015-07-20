@@ -1,0 +1,4 @@
+{
+  "cmd": "docker-compose build",
+  "sh": true
+}

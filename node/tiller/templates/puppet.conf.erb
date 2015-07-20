@@ -1,0 +1,41 @@
+[main]
+    <%= "user = #{user}" if defined?(user) %>
+    <%= "group = #{group}" if defined?(group) %>
+    <% if defined?(vardir) -%>
+    # Where Puppet stores dynamic and growing data.
+    # The default value is '/var/puppet'.
+    vardir = <%= vardir %>
+    <% end -%>
+    <% if defined?(logdir) -%>
+    # The Puppet log directory.
+    # The default value is '$vardir/log'.
+    logdir = <%= logdir %>
+    <% end -%>
+    <% if defined?(rundir) -%>
+    # Where Puppet PID files are kept.
+    # The default value is '$vardir/run'.
+    rundir = <%= rundir %>
+    <% end -%>
+    <% if defined?(ssldir) -%>
+    # Where SSL certificates are kept.
+    # The default value is '$confdir/ssl'.
+    ssldir = <%= ssldir %>
+    <% end -%>
+
+[agent]
+    <%= "server = #{server}" if defined?(server) %>
+    <%= "certname = #{certname}" if defined?(certname) %>
+    <% if defined?(classfile) -%>
+    # The file in which puppetd stores a list of the classes
+    # associated with the retrieved configuratiion.  Can be loaded in
+    # the separate ``puppet`` executable using the ``--loadclasses``
+    # option.
+    # The default value is '$confdir/classes.txt'.
+    classfile = <%= classfile %>
+    <% end -%>
+    <% if defined?(localconfig) -%>
+    # Where puppetd caches the local configuration.  An
+    # extension indicating the cache format is added automatically.
+    # The default value is '$confdir/localconfig'.
+    localconfig = <% localconfig %>
+    <% end -%>

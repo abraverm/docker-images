@@ -1,0 +1,5 @@
+puppet.conf.erb:
+  target: /etc/puppet/puppet.conf
+  config:
+    server: puppetmaster.docker.local
+    certname: puppetnode.docker.local

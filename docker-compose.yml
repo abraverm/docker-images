@@ -1,0 +1,16 @@
+puppetnode:
+  build: ./node
+  hostname: puppetnode
+  domainname: docker.local
+  links:
+    - puppetmaster:puppetmaster.docker.local
+  environment:
+    - PUPPET_SERVER=puppetmaster.docker.local
+puppetmaster:
+  build: ./master
+  hostname: puppetmaster
+  domainname: docker.local
+  volumes:
+    - modules/:/etc/puppet/modules
+  expose:
+    - "8140"
