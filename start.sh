@@ -30,5 +30,5 @@ if [ -e "/shared/ssl" ]; then
 	puppet agent -t
 	rm -rf /shared/ssl
 fi
-/usr/local/rvm/bin/rvm 1.9.3 do /opt/foreman/script/rails s -e production
+/usr/local/rvm/bin/rvm 2.0.0 do /opt/foreman/script/rails s -e production
 exit 0

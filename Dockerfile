@@ -1,11 +1,8 @@
-FROM fedora
+FROM fedora:21
 MAINTAINER Alexander Braverman "abraverm@redhat.com"
 
 # Setting variables
-ENV FOREMAN 1.9-stable
-ENV WITHOUT 'mysql2 pg test'
 ENV RAILS_ENV production
-ENV RUBY_VER 1.9.3
 
 # Installing dependencies
 # Puppet, libraries and tools
@@ -14,22 +11,25 @@ RUN yum install -y -q tar sudo git puppet gcc-c++ patch \
     libvirt-devel openssl-devel libxml2-devel sqlite-devel \
     libxslt-devel zlib-devel readline-devel \
     postgresql-devel mysql-devel  readline readline-devel zlib \
-    libyaml-devel libffi-devel make bzip2 autoconf automake libtool bison iconv-devel
+    libyaml-devel libffi-devel make bzip2 autoconf automake libtool bison
 
 # RVM - for running with 1.9.3
+ARG RUBY_VER
 RUN curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
 RUN curl -L get.rvm.io | bash -s stable
 ENV PATH $PATH:/usr/local/rvm/bin/
 RUN rvm requirements && rvm install $RUBY_VER
-RUN rvm 1.9.3 rubygems current
-RUN rvm 1.9.3 do gem install rails mysql2
+RUN rvm $RUBY_VER rubygems current
+RUN rvm $RUBY_VER do gem install rails mysql2
 
 # Downloading source
+ARG FOREMAN
 WORKDIR /opt
-RUN git clone https://github.com/theforeman/foreman.git -b $FOREMAN --depth 1
+RUN echo "Cloning Foreman $FOREMAN"; git clone https://github.com/theforeman/foreman.git -b $FOREMAN --depth 1
 WORKDIR /opt/foreman
 
 # Initialiazing foreman
+ARG WITHOUT
 RUN cp config/settings.yaml.example config/settings.yaml && cp config/database.yml.example config/database.yml
 RUN rvm $RUBY_VER do gem install bundler
 RUN rvm $RUBY_VER do bundle install --without $WITHOUT --path vendor
