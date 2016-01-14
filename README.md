@@ -1,53 +1,43 @@
-Foreman
-=======
-The Foreman image was designed for working 'out of the box'. The start script
-handles initialization.Foreman needs signed keys for connecting to a
-smart-proxy. It uses the keys which puppet generates. The keys which are used
-by Foreman and smart-proxy should be signed by the same CA server.
-Following options are available for setting the CA server.
+Foreman container
+=================
+This Dockerfile allows running Foreman git version in container.
+It requires passing arguments during build:
 
-> Note : The container can be started without CA server as argument or shared
-> volume. However without smart-proxy Foreman's functionality is limited.
+  - FOREMAN - git branch\verion\tag\commit to checkout and install foreman from.
+  - RUBY_VER - using RVM to run Foreman from specific Ruby version.
+  - WITHOUT - Excluding gems during Foreman installation from source, for more details read [Foreman Install From Source][1]
 
-Options
+Example
 -------
-1. Setting CA server
+0. If additional plugins needed, declare them in "plugins"
+directory. For example:
+create 'plugins/foreman_reserve.rb' with the following content:
 
-    Part of container initialization is to create certificates which is done
-by puppet. There is an option in puppet to choose who is the CA server.
-You can pass the CA server on creation of the container :
+    gem 'foreman_reserve'
 
-        docker run -d -P -h foreman abraverm/foreman ca.server.com 8140
+Docker will add the plugins before Foreman installation to bundler.d folder (/opt/foreman/bundler.d).
 
+1. Build:
 
-2. Sharing configurations with host
+    docker build --build-arg FOREMAN="1.7-stable" --build-arg RUBY_VER="2.0.0" --build-arg WITHOUT="mysql2 pg test" -t abraverm/foreman:1.7 .
 
-  Following configuration can be accessable by the host:
+2. Run:
 
-   - /opt/foreman/config/
-   - /etc/puppet/puppet.conf
-  > The initial script will link those configurations into directory /shared.
+    docker run -d -P abraverm/foreman:1.7
 
-  To create the directory and share it with host , use **--volume** argument
-  when creating the container:
+3. Foreman should be available at the assigned port (i.e 49157),
+browse to:
 
-        docker run -d -v /path/in/host:/shared -P -h foreman abraverm/foreman
+    http://localhost:49157
 
-  Setting the CA server is done by editing puppet.conf
-  (/path/in/host/puppet.conf).
+4. Enter Foreman with the following credentials:
+  - User name:
 
-  Create a file named **ssl** in /path/in/host/:
+      admin
 
-        touch /path/to/host/ssl
+  - Password:
 
-  Restart the container (the start script will generate new certificates):
+      changeme
 
-TO-DO
------
-
-  - Automate version and tagging - remove hard coded version in Dockerfile
-  - Build matrix (mysql,postgress, internal)
-  - Fig - entire infrastructure
-  - Better configuration management
-
-[1]: http://docs.puppetlabs.com/puppet/latest/reference/environments.html#enabling-directory-environments
+<Reference Links>
+[1]: http://theforeman.org/manuals/1.7/#3.4InstallFromSource

@@ -28,6 +28,9 @@ WORKDIR /opt
 RUN echo "Cloning Foreman $FOREMAN"; git clone https://github.com/theforeman/foreman.git -b $FOREMAN --depth 1
 WORKDIR /opt/foreman
 
+# Add plugins
+ADD plugins/* bundler.d/
+
 # Initialiazing foreman
 ARG WITHOUT
 RUN cp config/settings.yaml.example config/settings.yaml && cp config/database.yml.example config/database.yml
@@ -38,7 +41,5 @@ RUN rvm $RUBY_VER do bundle exec rake db:seed assets:precompile locale:pack
 RUN rvm $RUBY_VER do bundle exec rake permissions:reset password=changeme
 
 # Finalize
-ADD ./start.sh /opt/start.sh
-RUN touch /init
 EXPOSE 3000
-CMD /opt/start.sh
+CMD /usr/local/rvm/bin/rvm $RUBY_VER do /opt/foreman/script/rails s -e production
