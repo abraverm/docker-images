@@ -42,4 +42,5 @@ RUN rvm $RUBY_VER do bundle exec rake permissions:reset password=changeme
 
 # Finalize
 EXPOSE 3000
+ENV RUBY_VER $RUBY_VER
 CMD /usr/local/rvm/bin/rvm $RUBY_VER do /opt/foreman/script/rails s -e production
