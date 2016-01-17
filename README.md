@@ -23,7 +23,7 @@ Docker will add the plugins before Foreman installation to bundler.d folder (/op
 
 2. Run:
 
-    docker run -d -P abraverm/foreman:1.7
+    docker run -d -P -e RUBY_VER="2.0.0" abraverm/foreman:1.7
 
 3. Foreman should be available at the assigned port (i.e 49157),
 browse to:
