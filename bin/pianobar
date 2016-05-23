@@ -1,0 +1,25 @@
+#!/bin/bash
+set -e
+
+if docker inspect -f "{{ .Name }}" pianobar | grep '/pianobar'; then
+  docker restart pianobar
+else
+  USER_UID=$(id -u)
+  USER_GID=$(id -g)
+  PANDORA_PASS=$($HOME/bin/gnome-keyring-query get pandora)
+  PROXY_DNS=$($HOME/bin/get_dns_proxy.py)
+
+  docker run -it --rm \
+    --privileged \
+    --env=USER_UID=$USER_UID \
+    --env=USER_GID=$USER_GID \
+    --env=DISPLAY=unix$DISPLAY \
+    --env=PASS=$PANDORA_PASS \
+    --volume=/tmp/.X11-unix:/tmp/.X11-unix:ro \
+    --volume=/run/user/$USER_UID/pulse:/run/pulse:ro \
+    --volume=/dev/video0:/dev/video0:rw \
+    --volume=$HOME/.config/pianobar:/home/pianobar/.config/pianobar \
+    --dns=$PROXY_DNS \
+    --name=pianobar \
+    pianobar
+fi
