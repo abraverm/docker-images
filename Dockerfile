@@ -10,4 +10,5 @@ RUN pip install --upgrade pip
 RUN pip install taskrunner
 RUN pip install python-foreman
 RUN pip install ansible==1.8.4
+RUN pip install pywinrm
 CMD /bin/bash
