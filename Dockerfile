@@ -1,4 +1,5 @@
-FROM fedora
+FROM fedora:23
+ADD pip.conf /root/.pip/pip.conf
 RUN curl -o /etc/yum.repos.d/beaker-client-Fedora.repo https://beaker-project.org/yum/beaker-client-Fedora.repo
 RUN yum install -y git wget python-unittest2 python-nose python-futures \
     python-paramiko python-lxml python-six python-configobj python-pip \
@@ -9,6 +10,6 @@ RUN yum install -y git wget python-unittest2 python-nose python-futures \
 RUN pip install --upgrade pip
 RUN pip install taskrunner
 RUN pip install python-foreman
-RUN pip install ansible==1.8.4
+RUN pip install ansible
 RUN pip install pywinrm
 CMD /bin/bash
