@@ -1,0 +1,12 @@
+#!/bin/bash
+FHOME="/home/firefox"
+PROFILE=$1
+if docker inspect -f "{{ .State.Status }}" "firefox_${PROFILE}" | grep 'exited'; then
+  docker rm "firefox_${PROFILE}"
+fi
+docker run -d -v $HOME:$FHOME:rw \
+-v /etc/fonts/conf.d/:/etc/fonts/conf.d/:ro \
+-v /usr/share/fonts/:/usr/share/fonts/:ro \
+-v $HOME:$HOME:ro --tty \
+-e DISPLAY --net=host --name="firefox_${PROFILE}" \
+abraverm/firefox /usr/bin/firefox -P $PROFILE

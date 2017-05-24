@@ -1,2 +1,2 @@
-# docker-images
-Dockerfiles I've prepared for different needs, seperated by branches
+# Firefox
+Dockerized Firefox for my daily needs and to overcome the multi profile issue.
